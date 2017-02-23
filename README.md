@@ -1,22 +1,7 @@
-# Answer Retrieval [![Build Status](https://travis-ci.org/watson-developer-cloud/answer-retrieval.svg?branch=master)](https://travis-ci.org/watson-developer-cloud/answer-retrieval)
+# Note:
+Modified the original [Answer Retrieval Starter Kit](https://github.com/watson-developer-cloud/answer-retrieval) to include rows parameter from env file to be used in select and fcselect queries.
 
-This repository contains a **Starter Kit** (SK) that is
-designed to show you how to create your own answer retrieval
-application for [StackExchange](http://stackexchange.com/), using the
-[Retrieve and Rank](http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/retrieve-rank.html)(R&R)
-service, a cognitive API from the Watson Developer Cloud. Information
-retrieval applications enable users to search for content in specific
-information sources. Creating an answer retrieval system has
-historically been a very complex technique requiring lots of
-configuration and lots of expert tuning. This starter kit uses the
-Retrieve and Rank API to support the entire process of creating such a
-system, from uploading your data to evaluating results, including
-training your answer retrieval system.
 
-# Note: 
-Only after completing the steps defined below in table of contents, you will be able to deploy the application to Bluemix using the button below:
-
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/watson-developer-cloud/answer-retrieval.git)
 
 ## Table of Contents
   - [How this app works](#how-this-app-works)
@@ -88,13 +73,6 @@ If you are using a Linux system, the `git`, `anaconda`, `python`, and
 `node.js` packages may be installable through your system's package
 manager.
 
-### Checking out the repository for this SK
-
-Use `git` to clone the repository for this SK to your local machine. For example, using a command-line version of git, the command that you would execute is the following:
-
-```
-git clone git@github.com:watson-developer-cloud/answer-retrieval.git
-```
 
 ### Directory Structure of the repository
 The directory that you created when cloning the git repository for this SK contains the following subdirectories:
@@ -246,19 +224,3 @@ For comparison, the `config/features.json` contains a single Document scorer, in
     ```sh
     python server.py
     ```
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/watson-developer-cloud/answer-retrieval.git)
-
-## Privacy Notice
-
-Sample web applications that include the cf_deployment_tracker package included here may be configured to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to a [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service) service on each deployment:
-
-* Python package version
-* Python repository URL
-* Application Name (`application_name`)
-* Space ID (`space_id`)
-* Application Version (`application_version`)
-* Application URIs (`application_uris`)
-* Labels of bound services
-* Number of instances for each bound service and associated plan information
-
-This data is collected from the `server.py` file in the sample application and the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.

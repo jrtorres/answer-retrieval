@@ -83,9 +83,9 @@ $(document).ready(function () {
       }, 1000);
     });
 
-    if (results_showing >= 6) {
-      $('#load-more').hide();
-    }
+    //if (results_showing >= 6) {
+    //  $('#load-more').hide();
+    //}
   });
 
   $('#retrieve_answers').unbind('click').bind('click', function () {

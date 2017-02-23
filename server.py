@@ -51,16 +51,23 @@ def index():
 @app.route('/api/solr', methods=['GET'])
 def solr():
     """Requests to Solr"""
-    result = app.pysolr_client.search(request.args.get('q'))
+    print("Route Handler: Solr request started - %s" % request.args.get('q'))
+    result = app.pysolr_client.search(request.args.get('q'),**{
+        'rows': os.getenv('NUMBER_ROWS')
+    })
+    print("Route Handler: Solr response complete - %s hits and %s documents." % (result.hits, len(result.docs)))
     return jsonify({'numFound': result.hits, 'docs': result.docs, 'start': 0})
 
 @app.route('/api/ranker_select', methods=['GET'])
 def ranker_select():
     """Requests to the custom  or default based on environment property """
+    print("Route Handler: Ranker request started - %s" % request.args.get('q'))
     custom_ranker = os.getenv("SHOW_DEFAULT_RANKER")
     params = {'ranker_id': os.getenv('RANKER_ID'),
               'q': request.args.get('q'),
-              'fl': os.getenv('DEFAULT_FL'), 'fq': ''}
+              'fl': os.getenv('DEFAULT_FL'),
+              'fq': '',
+              'rows': os.getenv('NUMBER_ROWS')}
     resp = ""
     if custom_ranker == 'TRUE':
         app.logger.info('default_ranker request with args=%r' % params)
@@ -68,6 +75,8 @@ def ranker_select():
     else:
         app.logger.info('custom_ranker request with args=%r' % params)
         resp = app.scorers.fcselect(**params)
+
+    print("Route Handler: Ranker response complete - %s hits and %s documents." % (resp['response']['numFound'], len(resp['response']['docs']) ))
     return jsonify(resp)
 
 @app.route('/api/ranker', methods=['GET'])
@@ -75,7 +84,9 @@ def default_ranker():
     """Requests to the default ranker"""
     params = {'ranker_id': os.getenv('RANKER_ID'),
               'q': request.args.get('q'),
-              'fl': os.getenv('DEFAULT_FL'), 'fq':''}
+              'fl': os.getenv('DEFAULT_FL'),
+              'fq':'',
+              'rows': os.getenv('NUMBER_ROWS')}
 
     app.logger.info('default_ranker request with args=%r' % params)
     resp = app.scorers.fcselect_default(**params)
@@ -131,7 +142,7 @@ if __name__ == "__main__":
     SHOW_DEFAULT_RANKER = os.getenv('SHOW_DEFAULT_RANKER')
 
     # disable file logging
-    #setup_file_logger()
+    setup_file_logger()
 
     url = os.getenv('RETRIEVE_AND_RANK_BASE_URL')
     username = os.getenv('RETRIEVE_AND_RANK_USERNAME')
@@ -140,6 +151,8 @@ if __name__ == "__main__":
     collection_name = os.getenv('SOLR_COLLECTION_NAME')
     feature_json_file = os.getenv('FEATURE_FILE')
     answer_directory = os.getenv('ANSWER_DIRECTORY')
+    number_rows = os.getenv('NUMBER_ROWS')
+
     # custom scorer
     custom_scorers = Scorers(feature_json_file)
     app.scorers = FcSelect(custom_scorers, url, username, password, cluster_id,

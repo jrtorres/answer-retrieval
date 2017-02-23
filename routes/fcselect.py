@@ -26,7 +26,7 @@ this_dir = os.path.dirname(__file__)
 class FcSelect(object):
     def __init__(self, scorers, service_url, service_username, service_password,
                  cluster_id, collection_name, answer_directory, default_rerank_rows = 10,
-                 default_search_rows = 30, default_fl = 'id,title,text'):
+                 default_search_rows = 30, default_fl = 'id'):
         """
             Class that manages custom feature scorers
 
@@ -258,12 +258,11 @@ class FcSelect(object):
         return resps
 
     def fcselect_default(self, **kwargs):
-
         q           = self.get_query_value(kwargs, 'q')
         search_rows = self.get_query_value(kwargs, 'rows', self.default_search_rows_)
         fl          = self.get_query_value(kwargs, 'fl', self.default_fl_)
         ranker_id   = self.get_query_value(kwargs,'ranker_id')
-        fcselect_params = {'q': q, 'fl': fl, 'ranker_id': ranker_id, 'wt': 'json'}
+        fcselect_params = {'q': q, 'fl': fl, 'rows': search_rows, 'ranker_id': ranker_id, 'wt': 'json'}
 
         fcselect_json = self.service_fcselect(fcselect_params)
         return fcselect_json
